@@ -7,10 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] LayerMask groundLayerMask, wallLayerMask;
     [SerializeField] float playerHorizontalSpeed, stopFactor, jumpForce;
+    [SerializeField] Transform FirePoint;
 
 
     float horizontalInput;
-    bool isGrounded, jumpPressed, didJump, didWallJump, isCrouching, canAttack;
+    bool isGrounded, jumpPressed, didJump, didWallJump, isCrouching;
     Vector2 playerColliderSize;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
@@ -46,14 +47,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckCanAttack(){
-        canAttack = CanAttack();
-        print(canAttack);
-    }
-
     private void Update()
     {
-        CheckCanAttack();
         GetInput();
         GroundCheck();
         JumpCheck();
@@ -66,9 +61,11 @@ public class PlayerController : MonoBehaviour
     private void SetCharacterDirection(){
         if (horizontalInput < 0){
             spriteRenderer.flipX = true;
+            FirePoint.localPosition = new Vector3(Math.Abs(FirePoint.localPosition.x) * -1, FirePoint.localPosition.y , FirePoint.localPosition.z);
         }
         else if (horizontalInput > 0){
             spriteRenderer.flipX = false;
+            FirePoint.localPosition = new Vector3(Math.Abs(FirePoint.localPosition.x), FirePoint.localPosition.y , FirePoint.localPosition.z);
         }
     }
 
